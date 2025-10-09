@@ -3,3 +3,28 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+body{
+  font-family: 'Roboto', sans-serif;
+  color: rgb(76, 76, 76);
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4{
+  font-family: 'Marck Script', cursive;
+}
+
+h3{
+  font-size: 2rem;
+  text-align: center;
+  margin-block: 1em;
+}
+li, a{
+  color: inherit;
+  list-style-type: none;
+  text-decoration: none;
+}
+ img{
+  display: block;
+  max-width: 100%;
+ }

@@ -1,0 +1,17 @@
+<template>
+  <h3>Menu</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Pizza</th>
+        <th>remove</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Margherita</td>
+        <td><button>remove</button></td>
+      </tr>
+    </tbody>
+  </table>
+</template>
