@@ -36,9 +36,39 @@ form{
   display: flex;
   flex-direction: column;
   gap: 1em;
+  width: 90%;
   max-width: 600px;
   margin: 0 auto;
   border: 1px solid rgb(76, 76, 76);
   padding: 1em;
+}
+
+.input__field{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: .5em;
+  align-items: center;
+}
+label{
+  grid-column: 1/2;
+}
+input, textarea{
+  grid-column: 2/5;
+  width: 100%;
+  padding: .5em;
+}
+
+button{
+  width: fit-content;
+  margin: 0 auto;
+  background-color: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: .5em 2em;
+}
+p{
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 </style>
