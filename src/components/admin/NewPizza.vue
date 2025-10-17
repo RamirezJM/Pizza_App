@@ -1,31 +1,54 @@
+<script setup>
+import {ref} from 'vue'
+
+const newPizza = ref({
+  name: 'Napolitana',
+  description: 'a delicious cheese and tomato pizza',
+  options:[
+    {
+      size:9,
+      price:6.95
+    },
+    {
+      size:12,
+      price:15.95
+    }
+  ]
+})
+
+
+</script>
+
+
 <template>
+
   <h3>Add a new piza</h3>
   <form>
     <div class="input__field">
       <label for="name">Name</label>
-      <input type="text" id="name" name="name">
+      <input type="text" id="name" name="name" v-model="newPizza.name">
     </div>
     <div class="input__field">
       <label for="description">Description</label>
-      <textarea name="description" id="description"></textarea>
+      <textarea name="description" id="description" v-model="newPizza.description"></textarea>
     </div>
     <p>Option 1</p>
     <div class="input__field">
       <label for="size1">Size</label>
-      <input type="text" id="size1" name="size1">
+      <input type="text" id="size1" name="size1" v-model="newPizza.options[0].size">
     </div>
     <div class="input__field">
       <label for="price1">Price</label>
-      <input type="text" id="price1" name="price1">
+      <input type="text" id="price1" name="price1" v-model="newPizza.options[0].price">
     </div>
     <p>Option 2</p>
     <div class="input__field">
       <label for="size2">Size</label>
-      <input type="text" id="size2" name="size2">
+      <input type="text" id="size2" name="size2" v-model="newPizza.options[1].size">
     </div>
     <div class="input__field">
       <label for="price2">Price</label>
-      <input type="text" id="price2" name="price2">
+      <input type="text" id="price2" name="price2" v-model="newPizza.options[1].price">
     </div>
     <button>Add</button>
   </form>
