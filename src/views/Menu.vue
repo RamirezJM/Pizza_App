@@ -1,54 +1,10 @@
 <script setup>
-import { ref} from 'vue'
+/* import { ref} from 'vue' */
 import { useCart } from '../composables/useCart';
+import {usePizzas} from '../composables/usePizzas';
 const {cart, addToCart, updateQuantity, cartTotal} = useCart()
 
-const allPizzas = ref([
-  {
-  name: 'Napolitana1',
-  description: 'a delicious cheese and tomato pizza',
-  options:[
-    {
-      size:9,
-      price:6.95
-    },
-    {
-      size:12,
-      price:15.95
-    }
-  ], 
-},
-{
-  name: 'Napolitana2',
-  description: 'a delicious cheese and tomato pizza',
-  options:[
-    {
-      size:9,
-      price:9.50
-    },
-    {
-      size:12,
-      price:17.30
-    }
-  ],
-   
-},
-{
-  name: 'Napolitana3',
-  description: 'a delicious cheese and tomato pizza',
-  options:[
-    {
-      size:9,
-      price:5.90
-    },
-    {
-      size:12,
-      price:11.50
-    }
-  ], 
-  
-}
-])
+const {allPizzas} = usePizzas()
 
 </script>
 
@@ -57,7 +13,7 @@ const allPizzas = ref([
     <div class="menu__list">
       <h3>Our Pizzas</h3>
       <div class="menu__container">
-          <div class="menu__card" v-for="pizza in allPizzas" :key="pizza.idPizza">
+          <div class="menu__card" v-for="pizza in allPizzas" :key="pizza.id">
             <h4 class="menu__card__title">{{ pizza.name }}</h4>
             <p class="menu__card__info">{{ pizza.description }}</p>
             <div class="menu__card__price">

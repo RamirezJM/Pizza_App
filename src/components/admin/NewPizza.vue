@@ -1,20 +1,53 @@
 <script setup>
-import {ref} from 'vue'
+import { ref } from 'vue'
+import { addDoc } from 'firebase/firestore';
+import { dbPizzasRef } from '../../firebase';
+
+const statusMessage = ref('')
+const statusType = ref(null)
 
 const newPizza = ref({
-  name: 'Napolitana',
-  description: 'a delicious cheese and tomato pizza',
-  options:[
+  name: '',
+  description: '',
+  options: [
     {
-      size:9,
-      price:6.95
+      size: null,
+      price: null
     },
     {
-      size:12,
-      price:15.95
+      size: null,
+      price: null
     }
   ]
 })
+async function add() {
+  try {
+    await addDoc(dbPizzasRef, newPizza.value)
+
+    statusMessage.value = `The pizza ${newPizza.value.name} was added.`
+    statusType.value = 'success'
+
+    newPizza.value = {
+      name: '',
+      description: '',
+      options: [
+        { size: null, price: null }, 
+        { size: null, price: null }
+      ]
+    };
+  } catch (error) {
+    statusMessage.value = `There is an error adding the pizza: ${error}`
+    statusType.value = 'error'
+
+  } finally{
+    setTimeout(() => {
+    statusMessage.value = ''
+    statusType.value = null
+    }, 3000)
+    
+  } 
+
+}
 
 
 </script>
@@ -50,12 +83,18 @@ const newPizza = ref({
       <label for="price2">Price</label>
       <input type="text" id="price2" name="price2" v-model="newPizza.options[1].price">
     </div>
-    <button>Add</button>
+    <button @click.prevent="add()">Add</button>
+    <span :class="{
+      'success': statusType === 'success',
+      'error': statusType === 'error'
+    }">
+      {{ statusMessage }}
+    </span>
   </form>
 </template>
 
 <style scoped>
-form{
+form {
   display: flex;
   flex-direction: column;
   gap: 1em;
@@ -66,22 +105,25 @@ form{
   padding: 1em;
 }
 
-.input__field{
+.input__field {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: .5em;
   align-items: center;
 }
-label{
+
+label {
   grid-column: 1/2;
 }
-input, textarea{
+
+input,
+textarea {
   grid-column: 2/5;
   width: 100%;
   padding: .5em;
 }
 
-button{
+button {
   width: fit-content;
   margin: 0 auto;
   background-color: var(--accent);
@@ -90,8 +132,19 @@ button{
   border-radius: 5px;
   padding: .5em 2em;
 }
-p{
+
+p {
   font-size: 1.1rem;
   font-weight: 600;
+}
+.success, .error{
+  text-align: center;
+}
+
+.success{
+  color: green;
+}
+.error{
+  color: red;
 }
 </style>
