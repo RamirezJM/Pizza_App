@@ -1,11 +1,14 @@
 import {ref, computed} from 'vue'
+import { addDoc } from 'firebase/firestore'
+import { dbOrdersRef } from '../firebase'
+
 
 export function useCart(){
   const cart = ref([])
+  const cartMessage = ref('The cart is empty')
 
 const addToCart = (pizza, options) => {
  const idPizza = `${pizza.name}-${options.size}`
- console.log(idPizza)
  const existingPizza = cart.value.find(item => item.idPizza === idPizza)
   if (existingPizza) {
     existingPizza.quantity++
@@ -40,12 +43,32 @@ const cartTotal = computed(() => {
     const itemSubTotal = item.price * item.quantity
     return sum + itemSubTotal
   }, 0)
-})
+});
+
+async function addNewOrder(){
+  try {
+    const order = {
+      createdAt: new Date(),
+      pizzas: cart.value,
+    }
+    await addDoc(dbOrdersRef, order)
+    cart.value = []
+    cartMessage.value = 'Thank you, your order has been placed!'
+    setTimeout(() => {
+       cartMessage.value = 'The cart is empty'
+    }, 3000)
+   
+  } catch (error) {
+    cartMessage.value = `${error}, Please try again.`
+  }
+}
 
 return{
   cart,
   addToCart,
   updateQuantity,
-  cartTotal
+  cartTotal,
+  addNewOrder,
+  cartMessage,
 }
 }

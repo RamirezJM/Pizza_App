@@ -2,8 +2,8 @@
 /* import { ref} from 'vue' */
 import { useCart } from '../composables/useCart';
 import {usePizzas} from '../composables/usePizzas';
-const {cart, addToCart, updateQuantity, cartTotal} = useCart()
 
+const {cart, addToCart, updateQuantity, cartTotal, addNewOrder, cartMessage} = useCart()
 const {allPizzas} = usePizzas()
 
 </script>
@@ -18,13 +18,13 @@ const {allPizzas} = usePizzas()
             <p class="menu__card__info">{{ pizza.description }}</p>
             <div class="menu__card__price">
               <div class="small">
-                <p>{{ pizza.options[0].size }}</p>
-                <p>{{ pizza.options[0].price }}</p>
+                <p>{{ pizza.options[0].size }}"</p>
+                <p>${{ pizza.options[0].price }}</p>
                 <button class="menu__button" @click="addToCart(pizza, pizza.options[0])" >Add</button>
               </div>
               <div class="large">
-                <p>{{ pizza.options[1].size }}</p>
-                <p>{{ pizza.options[1].price }}</p>
+                <p>{{ pizza.options[1].size }}"</p>
+                <p>${{ pizza.options[1].price }}</p>
               <button class="menu__button" @click="addToCart(pizza, pizza.options[1])" >Add</button>
             </div>
           </div>
@@ -34,7 +34,7 @@ const {allPizzas} = usePizzas()
 
     <div class="cart">
       <h3>Cart</h3>
-      <div class="orders">
+       <div class="orders" v-if="cart.length > 0">
         <div class="orders__item" v-for="pizza in cart" :key="pizza.idPizza">
           <div class="orders__item__buttons">
             <button class="quantity__button menu__button" @click="updateQuantity(pizza, 'decrement')" >-</button>
@@ -46,9 +46,12 @@ const {allPizzas} = usePizzas()
           <p class="orders__item__price">{{ Number(pizza.price * pizza.quantity).toFixed(2)}}</p>
         </div>
       </div>
+      <div v-else>
+        <p>{{ cartMessage }}</p>
+      </div>
       <div class="orders__total">
         <p class="orders__total__price">Orders total: ${{ Number(cartTotal.toFixed(2)) }}</p>
-        <button class="menu__button">Place Order</button>
+        <button class="menu__button" @click="addNewOrder()">Place Order</button>
       </div>
     </div>
   </section>
