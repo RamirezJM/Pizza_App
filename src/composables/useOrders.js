@@ -10,8 +10,8 @@ export function useOrders() {
     allOrders.value = []
 
     try {
-      const queryData = query(dbOrdersRef, orderBy('createdAt'))
-      const docs = await getDocs(dbOrdersRef)
+      const queryData = query(dbOrdersRef, orderBy('createdAt', 'desc'))
+      const docs = await getDocs(queryData)
       docs.forEach((doc) => {
         const order = {
           id: doc.id,

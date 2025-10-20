@@ -1,15 +1,22 @@
 <script setup>
 import { usePizzas } from '../../composables/usePizzas';
+import { ref } from 'vue';
 
 const { allPizzas, deletePizza, message } = usePizzas()
+const showMenu = ref(true)
 
 </script>
 
 
 <template>
-  <h3>Menu</h3>
-  <p class="error">{{ message }}</p>
-  <table>
+  <div class="section-header">
+      <h3>Menu</h3>
+      <button class="toggle-btn" @click="showMenu = !showMenu">{{ showMenu ? 'hide section' : 'show section'
+        }}</button>
+        <p class="error">{{ message }}</p>
+    </div>
+  
+  <table v-show="showMenu">
     <thead>
       <tr>
         <th>Pizza</th>
@@ -19,7 +26,7 @@ const { allPizzas, deletePizza, message } = usePizzas()
     <tbody v-for="pizza in allPizzas" :key="pizza.id">
       <tr>
         <td>{{ pizza.name }}</td>
-        <td><button @click="deletePizza(pizza.id)">
+        <td><button @click="deletePizza(pizza.id)" class="delete-button">
             <img src="../../assets/images/trash.svg" alt="trash icon">
           </button></td>
       </tr>
@@ -40,7 +47,7 @@ th {
   font-weight: 600;
 }
 
-button {
+.delete-button {
   border: none;
 }
 

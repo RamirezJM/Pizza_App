@@ -1,5 +1,11 @@
+<script setup>
+import SignIn from './SignIn.vue';
+</script>
+
+
 <template>
   <header>
+    <SignIn/>
     <div class="title-container">
       <h1 class="title">
         <router-link :to="{ name: 'home' }">Pizza Planet</router-link>

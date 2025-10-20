@@ -5,6 +5,7 @@ import { dbPizzasRef } from '../../firebase';
 
 const statusMessage = ref('')
 const statusType = ref(null)
+const showNewPizza = ref(true)
 
 const newPizza = ref({
   name: '',
@@ -31,7 +32,7 @@ async function add() {
       name: '',
       description: '',
       options: [
-        { size: null, price: null }, 
+        { size: null, price: null },
         { size: null, price: null }
       ]
     };
@@ -39,13 +40,13 @@ async function add() {
     statusMessage.value = `There is an error adding the pizza: ${error}`
     statusType.value = 'error'
 
-  } finally{
+  } finally {
     setTimeout(() => {
-    statusMessage.value = ''
-    statusType.value = null
+      statusMessage.value = ''
+      statusType.value = null
     }, 3000)
-    
-  } 
+
+  }
 
 }
 
@@ -54,43 +55,50 @@ async function add() {
 
 
 <template>
+  <section class="newPizza">
+    <div class="section-header">
+      <h3>Add a new piza</h3>
+      <button class="toggle-btn" @click="showNewPizza = !showNewPizza">{{ showNewPizza ? 'hide section' : 'show section'
+        }}</button>
+    </div>
 
-  <h3>Add a new piza</h3>
-  <form>
-    <div class="input__field">
-      <label for="name">Name</label>
-      <input type="text" id="name" name="name" v-model="newPizza.name">
-    </div>
-    <div class="input__field">
-      <label for="description">Description</label>
-      <textarea name="description" id="description" v-model="newPizza.description"></textarea>
-    </div>
-    <p>Option 1</p>
-    <div class="input__field">
-      <label for="size1">Size</label>
-      <input type="text" id="size1" name="size1" v-model="newPizza.options[0].size">
-    </div>
-    <div class="input__field">
-      <label for="price1">Price</label>
-      <input type="text" id="price1" name="price1" v-model="newPizza.options[0].price">
-    </div>
-    <p>Option 2</p>
-    <div class="input__field">
-      <label for="size2">Size</label>
-      <input type="text" id="size2" name="size2" v-model="newPizza.options[1].size">
-    </div>
-    <div class="input__field">
-      <label for="price2">Price</label>
-      <input type="text" id="price2" name="price2" v-model="newPizza.options[1].price">
-    </div>
-    <button @click.prevent="add()">Add</button>
-    <span :class="{
-      'success': statusType === 'success',
-      'error': statusType === 'error'
-    }">
-      {{ statusMessage }}
-    </span>
-  </form>
+    <form v-show="showNewPizza">
+      <div class="input__field">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" v-model="newPizza.name">
+      </div>
+      <div class="input__field">
+        <label for="description">Description</label>
+        <textarea name="description" id="description" v-model="newPizza.description"></textarea>
+      </div>
+      <p>Option 1</p>
+      <div class="input__field">
+        <label for="size1">Size</label>
+        <input type="text" id="size1" name="size1" v-model="newPizza.options[0].size">
+      </div>
+      <div class="input__field">
+        <label for="price1">Price</label>
+        <input type="text" id="price1" name="price1" v-model="newPizza.options[0].price">
+      </div>
+      <p>Option 2</p>
+      <div class="input__field">
+        <label for="size2">Size</label>
+        <input type="text" id="size2" name="size2" v-model="newPizza.options[1].size">
+      </div>
+      <div class="input__field">
+        <label for="price2">Price</label>
+        <input type="text" id="price2" name="price2" v-model="newPizza.options[1].price">
+      </div>
+      <button @click.prevent="add()" class="form-button">Add</button>
+      <span :class="{
+        'success': statusType === 'success',
+        'error': statusType === 'error'
+      }">
+        {{ statusMessage }}
+      </span>
+    </form>
+  </section>
+
 </template>
 
 <style scoped>
@@ -123,7 +131,7 @@ textarea {
   padding: .5em;
 }
 
-button {
+.form-button {
   width: fit-content;
   margin: 0 auto;
   background-color: var(--accent);
@@ -137,14 +145,17 @@ p {
   font-size: 1.1rem;
   font-weight: 600;
 }
-.success, .error{
+
+.success,
+.error {
   text-align: center;
 }
 
-.success{
+.success {
   color: green;
 }
-.error{
+
+.error {
   color: red;
 }
 </style>

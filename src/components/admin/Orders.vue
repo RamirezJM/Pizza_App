@@ -1,41 +1,48 @@
 <script setup>
 import { useOrders } from '../../composables/useOrders';
+import {ref} from 'vue'
 
-const {allOrders, getOrders, message, deleteOrder} = useOrders()
+const { allOrders, getOrders, message, deleteOrder } = useOrders()
+const showOrders = ref(true)
 
 </script>
 
 
 <template>
   <section class="orders">
-    <h3>Current Orders: {{ allOrders.length }}</h3>
-    <p class="message">{{ message }}</p>
-    <table>
-      <thead>
+    <div class="section-header">
+      <h3>Current Orders: {{ allOrders.length }}</h3>
+      <button class="toggle-btn" @click="showOrders = !showOrders">{{ showOrders ? 'hide section' : 'show section'
+        }}</button>
+         <p class="message">{{ message }}</p>
+    </div>
+       
+    <table v-show="showOrders">
+      <tbody v-for="order in allOrders" :key="order.id">
+        <tr>
+          <td class="left order" colspan="2">Order: {{ order.id }}
+            <button @click="deleteOrder(order.id)">Delete</button>
+          </td>
+          <td>{{ order.createdAt.toDate().toLocaleString() }}</td>
+        </tr>
         <tr>
           <th class="left">Item</th>
           <th>Size</th>
           <th>Quantity</th>
           <th>Total Price</th>
+
         </tr>
-      </thead>
-      <tbody v-for="order in allOrders" :key="order.id" >
-        <tr>
-          <td class="left order">Order: {{ order.id }}
-            <button @click="deleteOrder(order.id)">Delete</button>
-          </td>
-        </tr>
-        <tr v-for="pizza in order.pizzas" :key="pizza.name + pizza.size" class="pizza-data"> 
+        <tr v-for="pizza in order.pizzas" :key="pizza.name + pizza.size" class="pizza-data">
           <td class="left">{{ pizza.name }}</td>
-          <td>{{ pizza.size }}</td>
+          <td>{{ pizza.size }}"</td>
           <td>{{ pizza.quantity }}</td>
-          <td>{{ pizza.price * pizza.quantity }}</td>
+          <td>${{ pizza.price * pizza.quantity }}</td>
         </tr>
       </tbody>
-      
+
     </table>
 
-    
+
   </section>
 </template>
 
@@ -58,17 +65,19 @@ td {
   padding: .5em;
 }
 
-tbody{
+tbody {
   border-bottom: solid 1px #727272;
   margin-bottom: 1em;
 }
-.left{
+
+.left {
   text-align: left;
 }
 
-.order{
+.order {
   font-weight: 600;
 }
+
 button {
   border: solid 1px var(--accent);
   padding: .3rem;
@@ -76,15 +85,14 @@ button {
   color: var(--accent);
   margin-inline: .5em;
   background-color: transparent;
-  
+
 }
 
-.message{
+.message {
   text-align: center;
   font-size: 600;
   margin-block: .5em;
 }
-
 </style>
 
 
