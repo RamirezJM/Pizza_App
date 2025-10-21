@@ -1,5 +1,9 @@
 <script setup>
 import SignIn from './SignIn.vue';
+import { useAuth } from '../composables/useAuth';
+const {toggleModal, userData} = useAuth()
+
+
 </script>
 
 
@@ -17,6 +21,7 @@ import SignIn from './SignIn.vue';
       <router-link :to="{ name: 'about' }" class="nav-link">About</router-link>
       <router-link :to="{ name: 'admin' }" class="nav-link">Admin</router-link>
       <router-link :to="{ name: 'menu' }" class="nav-link">Menu</router-link>
+      <button @click="toggleModal" class="signin-btn">{{ userData ? 'Sign in' : 'Logout' }}</button>
     </nav>
 
   </header>
@@ -57,7 +62,12 @@ nav {
   
   font-size: 1.2rem;
 }
-
+ .signin-btn{
+  border: none;
+  font-size :1.2rem;
+  background-color: transparent;
+  color: #fff;
+ }
 
 @media (min-width:850px){
   header{
