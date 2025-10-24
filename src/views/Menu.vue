@@ -3,7 +3,7 @@
 import { useCart } from '../composables/useCart';
 import {usePizzas} from '../composables/usePizzas';
 
-const {cart, addToCart, updateQuantity, cartTotal, addNewOrder, cartMessage} = useCart()
+const {cart, addToCart, updateQuantity, cartTotal, addNewOrder, cartMessage, logInMessage} = useCart()
 const {allPizzas} = usePizzas()
 
 </script>
@@ -43,16 +43,17 @@ const {allPizzas} = usePizzas()
           </div>
           <p class="orders__item__name">{{ pizza.name }}</p>
           <p class="orders__item__name">{{ pizza.size }}"</p>
-          <p class="orders__item__price">{{ Number(pizza.price * pizza.quantity).toFixed(2)}}</p>
+          <p class="orders__item__price">${{ filters.formatMoney(pizza.price * pizza.quantity) }}</p>
         </div>
       </div>
       <div v-else>
         <p>{{ cartMessage }}</p>
       </div>
       <div class="orders__total">
-        <p class="orders__total__price">Orders total: ${{ Number(cartTotal.toFixed(2)) }}</p>
+        <p class="orders__total__price">Orders total: ${{ filters.formatMoney(cartTotal) }}</p>
         <button class="menu__button" @click="addNewOrder()">Place Order</button>
       </div>
+      <p class="login-message">{{ logInMessage }}</p>
     </div>
   </section>
 </template>
@@ -124,6 +125,10 @@ h4 {
 .orders__total__price {
   font-size: 1.1rem;
   font-weight: 600;
+}
+
+.login-message{
+  text-align:center;
 }
 
 @media (min-width:900px) {

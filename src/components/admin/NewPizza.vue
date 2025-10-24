@@ -2,10 +2,12 @@
 import { ref } from 'vue'
 import { addDoc } from 'firebase/firestore';
 import { dbPizzasRef } from '../../firebase';
+import { useAuth } from '../../composables/useAuth';
 
 const statusMessage = ref('')
 const statusType = ref(null)
 const showNewPizza = ref(true)
+const {userData} = useAuth()
 
 const newPizza = ref({
   name: '',
@@ -22,6 +24,7 @@ const newPizza = ref({
   ]
 })
 async function add() {
+  if(!userData.value) return;
   try {
     await addDoc(dbPizzasRef, newPizza.value)
 

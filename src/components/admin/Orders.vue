@@ -36,7 +36,7 @@ const showOrders = ref(true)
           <td class="left">{{ pizza.name }}</td>
           <td>{{ pizza.size }}"</td>
           <td>{{ pizza.quantity }}</td>
-          <td>${{ pizza.price * pizza.quantity }}</td>
+          <td>${{ filters.formatMoney(pizza.price * pizza.quantity) }}</td>
         </tr>
       </tbody>
 

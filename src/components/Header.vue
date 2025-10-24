@@ -1,7 +1,7 @@
 <script setup>
 import SignIn from './SignIn.vue';
 import { useAuth } from '../composables/useAuth';
-const {toggleModal, userData} = useAuth()
+const {toggleModal, userData, logOut} = useAuth()
 
 
 </script>
@@ -21,7 +21,8 @@ const {toggleModal, userData} = useAuth()
       <router-link :to="{ name: 'about' }" class="nav-link">About</router-link>
       <router-link :to="{ name: 'admin' }" class="nav-link">Admin</router-link>
       <router-link :to="{ name: 'menu' }" class="nav-link">Menu</router-link>
-      <button @click="toggleModal" class="signin-btn">{{ userData ? 'Sign in' : 'Logout' }}</button>
+      <button @click="toggleModal" class="signin-btn" v-if="!userData">SignIn</button>
+      <button @click="logOut" class="signin-btn" v-else>SignOut</button>
     </nav>
 
   </header>
