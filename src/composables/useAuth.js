@@ -1,7 +1,7 @@
 import { getAuth, createUserWithEmailAndPassword, 
          signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
 import { ref } from "vue";
-import {doc, setDoc} from 'firebase/firestore'
+import {doc, setDoc, getDoc} from 'firebase/firestore'
 import {db, dbUsersRef} from '../firebase'
 
 const modalOpen = ref(false)
@@ -11,6 +11,19 @@ export function useAuth() {
   const errorMessage = ref('')
   const userData = ref(null)
   const userIsAdmin = ref(false)
+
+
+  async function checkAdmin() {
+    if(userData.value?.uid){
+      const docRef = doc(dbUsersRef, userData.value.uid)
+      const user = await getDoc(docRef)
+      if(user.exists() && user.data().isAdmin){
+        userIsAdmin.value = true
+      }else{
+        userIsAdmin.value = false
+      }
+    }
+  }
   
   
 
@@ -76,10 +89,12 @@ export function useAuth() {
   onAuthStateChanged(auth, (user) => {
     if(user){
       userData.value = user
+      checkAdmin()
     }else{
       userData.value = null
+      userIsAdmin.value = false
     }
   })
 
-  return{ errorMessage, signUp, modalOpen,toggleModal, logIn, logOut, userData}
+  return{ errorMessage, signUp, modalOpen,toggleModal, logIn, logOut, userData, userIsAdmin}
 }
